@@ -2,12 +2,9 @@
 <resources>
 
     <string name="app_name">ContactsBackupAndExport</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="email">Email</string>
-    <string name="dropbox">Dropbox</string>
-    <string name="google_drive">Google Drive</string>
-    <string name="one_note">One Note</string>
-    <string name="box">Box</string>
+    <string name="txt">.txt</string>
+    <string name="csv">.csv</string>
+    <string name="vcf">.vcf (vCard)</string>
 
 </resources>
