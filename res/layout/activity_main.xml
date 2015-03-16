@@ -97,12 +97,22 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/contacts_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:max="100"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btn_begin_export"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:onClick="downloadContacts"
             android:text="Begin Export" />
     </LinearLayout>
 
