@@ -1,17 +1,23 @@
 package com.lumere.exportcontactstoemail;
 
+import java.io.File;
+import java.io.IOException;
+
 import android.content.ContentResolver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	DownloadContacts_Fragment dc_fragment;
 	ProgressBar dc_progress_bar;
+	File contacts_file;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +52,19 @@ public class MainActivity extends ActionBarActivity {
 				this.dc_progress_bar.setVisibility(View.GONE);
 			}
 		}
+		this.dc_progress_bar.setIndeterminate(false);
+
 	}
 
 	public void downloadContacts(View view) {
-		this.dc_fragment.startTask();
+		try {
+			this.contacts_file = File.createTempFile("my_contacts", "txt",
+					this.getExternalCacheDir());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		this.dc_fragment.startTask(this.contacts_file);
 	}
 
 	public void showProgressBar() {
@@ -70,8 +85,8 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 
-	public void updateProgress(int progress) {
-		this.dc_progress_bar.setProgress(progress);
+	public void updateProgress(Float progress) {
+		this.dc_progress_bar.setProgress((int) (progress * 100));
 	}
 
 	@Override

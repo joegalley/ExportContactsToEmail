@@ -1,5 +1,7 @@
 package com.lumere.exportcontactstoemail;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.os.Bundle;
@@ -18,9 +20,9 @@ public class DownloadContacts_Fragment extends Fragment {
 		this.contacts_content_resolver = cr;
 	}
 
-	public void startTask() {
+	public void startTask(File cts_file) {
 		this.dc_task = new DownloadContacts_Task(activity,
-				this.contacts_content_resolver);
+				this.contacts_content_resolver, cts_file);
 		this.dc_task.execute();
 
 	}
