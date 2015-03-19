@@ -7,12 +7,10 @@ import android.content.ContentResolver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	DownloadContacts_Fragment dc_fragment;
