@@ -1,16 +1,25 @@
 package com.lumere.exportcontactstoemail;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
+import javax.mail.MessagingException;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	DownloadContacts_Fragment dc_fragment;
@@ -54,15 +63,12 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	public void downloadContacts(View view) {
-		try {
-			this.contacts_file = File.createTempFile("my_contacts", "txt",
-					this.getExternalCacheDir());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void downloadContacts(View view) throws IOException {
 
-		this.dc_fragment.startTask(this.contacts_file);
+		this.dc_fragment.startTask(this);
+
+		Log.e("DONE", "DONE");
+
 	}
 
 	public void showProgressBar() {
@@ -75,15 +81,24 @@ public class MainActivity extends ActionBarActivity {
 				this.dc_progress_bar.setVisibility(View.VISIBLE);
 			}
 		}
+		Log.e("adf", "adf");
 	}
 
 	public void hideProgressBar() {
 		if (this.dc_progress_bar.getVisibility() == View.VISIBLE) {
 			this.dc_progress_bar.setVisibility(View.GONE);
 		}
+
+	}
+
+	public void done() {
+		Toast.makeText(getApplicationContext(), "DONE", Toast.LENGTH_SHORT)
+				.show();
 	}
 
 	public void updateProgress(Float progress) {
+		String s = Integer.toString((int) (progress * 100));
+		Log.e("sdf", s);
 		this.dc_progress_bar.setProgress((int) (progress * 100));
 	}
 
@@ -104,6 +119,47 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void sendEmail() {
+
+		FileInputStream fis;
+		try {
+
+			fis = this.getApplicationContext().openFileInput("contacts.txt");
+
+			InputStreamReader isr = new InputStreamReader(fis);
+			char[] buf = new char[1024];
+			String s = "";
+			int charRead;
+			while ((charRead = isr.read(buf)) > 0) {
+				// char to string conversion
+				String readstring = String.copyValueOf(buf, 0, charRead);
+				s += readstring;
+				Log.e("aaa", s);
+
+			}
+			fis.close();
+			isr.close();
+		} catch (FileNotFoundException e) {
+
+		} catch (IOException e1) {
+
+		} catch (Exception e2) {
+			Log.e("SendMail", e2.getMessage(), e2);
+		}
+
+		SendEmail send_email = new SendEmail();
+		try {
+			send_email.send("_EMAIL", "hello", "test");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

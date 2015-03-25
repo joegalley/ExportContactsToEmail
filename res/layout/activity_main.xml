@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_vertical"
-        android:layout_weight="40"
+        android:layout_weight="20"
         android:orientation="vertical" >
     </LinearLayout>
 
@@ -21,7 +21,6 @@
 
         <Button
             android:id="@+id/btn_help"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -30,7 +29,6 @@
 
         <Button
             android:id="@+id/btn_settings"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -39,7 +37,6 @@
 
         <Button
             android:id="@+id/btn_about"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +68,7 @@
 
                 <EditText
                     android:id="@+id/email_address"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email..."
                     android:inputType="textEmailAddress" />
@@ -82,15 +79,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
                 <RadioGroup
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:orientation="vertical" >
 
                     <TextView
@@ -103,27 +94,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/txt"
-                        android:textSize="22sp" />
+                        android:textSize="12sp" />
 
                     <CheckBox
                         android:id="@+id/csv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/csv"
-                        android:textSize="22sp" />
+                        android:textSize="12sp" />
 
                     <CheckBox
                         android:id="@+id/vcf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/vcf"
-                        android:textSize="22sp" />
+                        android:textSize="12sp" />
                 </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
             </LinearLayout>
 
             <ProgressBar
@@ -138,7 +124,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"

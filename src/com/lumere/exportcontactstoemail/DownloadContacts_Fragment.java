@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,9 +21,9 @@ public class DownloadContacts_Fragment extends Fragment {
 		this.contacts_content_resolver = cr;
 	}
 
-	public void startTask(File cts_file) {
+	public void startTask(Context context) {
 		this.dc_task = new DownloadContacts_Task(activity,
-				this.contacts_content_resolver, cts_file);
+				this.contacts_content_resolver, context);
 		this.dc_task.execute();
 
 	}
