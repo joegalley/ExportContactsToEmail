@@ -1,7 +1,5 @@
 package com.lumere.exportcontactstoemail;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;

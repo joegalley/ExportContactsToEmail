@@ -1,12 +1,9 @@
 package com.lumere.exportcontactstoemail;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -19,8 +16,6 @@ import android.util.Log;
 public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 	private ContentResolver content_resolver;
 	private Activity activity;
-	private File contacts_f;
-	private int num_contacts_read;
 	private Context context;
 
 	public DownloadContacts_Task(Activity activity, ContentResolver cr,
@@ -52,17 +47,16 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 		try {
 			fos_txt = this.context.openFileOutput("contacts.txt",
 					Context.MODE_PRIVATE);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-
-		Cursor phone_cursor = null, email_cursor = null;
 
 		Cursor contacts_cursor = this.content_resolver.query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
-		String phoneNo = null, email = null, email_type = null;
+		Cursor phone_cursor = null, email_cursor = null;
+
+		String phone_num = null, email = null, email_type = null;
 
 		float total_contacts = contacts_cursor.getCount();
 		float num_read = 0;
@@ -92,10 +86,10 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 				// all phone numbers for the contact
 				while (phone_cursor.moveToNext()) {
-					phoneNo = phone_cursor
+					phone_num = phone_cursor
 							.getString(phone_cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					Log.d("Contact " + num_read, " phoneNo: " + phoneNo);
+					Log.d("Contact " + num_read, " phoneNo: " + phone_num);
 
 				}
 
@@ -115,8 +109,9 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 				}
 
 				try {
-					fos_txt.write(new String(name + ',' + phoneNo + ',' + email)
-							.getBytes());
+					// write info to file
+					fos_txt.write(new String(name + ',' + phone_num + ','
+							+ email).getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -149,10 +144,8 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 	protected void onPostExecute(File[] f) {
 		if (this.activity != null) {
 			((MainActivity) activity).hideProgressBar();
-
 		}
 
 		((MainActivity) activity).sendEmail();
-
 	}
 }

@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	DownloadContacts_Fragment dc_fragment;
@@ -64,41 +62,27 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void downloadContacts(View view) throws IOException {
-
 		this.dc_fragment.startTask(this);
-
-		Log.e("DONE", "DONE");
-
 	}
 
+	// progress bar for DownloadContacts_Task
 	public void showProgressBar() {
 		if (this.dc_fragment.dc_task != null) {
-			// show the progress bar if it's not currently visible and the
-			// progress isn't 100%
 			if (this.dc_progress_bar.getVisibility() != View.VISIBLE
 					&& this.dc_progress_bar.getProgress() != this.dc_progress_bar
 							.getMax()) {
 				this.dc_progress_bar.setVisibility(View.VISIBLE);
 			}
 		}
-		Log.e("adf", "adf");
 	}
 
 	public void hideProgressBar() {
 		if (this.dc_progress_bar.getVisibility() == View.VISIBLE) {
 			this.dc_progress_bar.setVisibility(View.GONE);
 		}
-
-	}
-
-	public void done() {
-		Toast.makeText(getApplicationContext(), "DONE", Toast.LENGTH_SHORT)
-				.show();
 	}
 
 	public void updateProgress(Float progress) {
-		String s = Integer.toString((int) (progress * 100));
-		Log.e("sdf", s);
 		this.dc_progress_bar.setProgress((int) (progress * 100));
 	}
 
@@ -143,23 +127,24 @@ public class MainActivity extends ActionBarActivity {
 			isr.close();
 		} catch (FileNotFoundException e) {
 
-		} catch (IOException e1) {
+		} catch (IOException e) {
 
-		} catch (Exception e2) {
-			Log.e("SendMail", e2.getMessage(), e2);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		SendEmail send_email = new SendEmail();
+		// send the email
+		AsyncEmail email = new AsyncEmail();
 		try {
-			send_email.send("_EMAIL", "hello", "test");
+			email.setToAddress("TO_EMAIL");
+			email.setSubject("Subject Test");
+			email.setBody("Test body");
+			email.send();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-
 }
