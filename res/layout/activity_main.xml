@@ -89,9 +89,14 @@
                         android:layout_height="wrap_content"
                         android:text="2) Choose your output format(s)" />
 
+                    <ImageView
+                        style="@style/TitleBarLogo"
+                        android:contentDescription="@string/description_logo"
+                        android:src="@drawable/title_logo" />
+
                     <CheckBox
                         android:id="@+id/txt"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/txt"
                         android:textSize="12sp" />
@@ -100,6 +105,7 @@
                         android:id="@+id/csv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/txt_bg"
                         android:text="@string/csv"
                         android:textSize="12sp" />
 

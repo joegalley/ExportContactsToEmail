@@ -106,10 +106,11 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void sendEmail() {
-
+		/*-
 		FileInputStream fis;
-		try {
 
+		this.getApplicationContext().getFilesDir();
+		try {
 			fis = this.getApplicationContext().openFileInput("contacts.txt");
 
 			InputStreamReader isr = new InputStreamReader(fis);
@@ -120,7 +121,6 @@ public class MainActivity extends ActionBarActivity {
 				// char to string conversion
 				String readstring = String.copyValueOf(buf, 0, charRead);
 				s += readstring;
-				Log.e("aaa", s);
 
 			}
 			fis.close();
@@ -132,13 +132,14 @@ public class MainActivity extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		 */
 		// send the email
 		AsyncEmail email = new AsyncEmail();
 		try {
-			email.setToAddress("TO_EMAIL");
+			email.setToAddress("josephgalley@gmail.com");
 			email.setSubject("Subject Test");
 			email.setBody("Test body");
+			email.addFileAttachment(new File(this.getFilesDir(), "contacts.txt"));
 			email.send();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

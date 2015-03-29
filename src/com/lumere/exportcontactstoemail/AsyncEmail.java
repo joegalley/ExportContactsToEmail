@@ -1,16 +1,24 @@
 package com.lumere.exportcontactstoemail;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
 
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import android.os.AsyncTask;
 
@@ -24,6 +32,7 @@ public class AsyncEmail {
 	private String to_address;
 	private String subject;
 	private String body;
+	private File file_attachment;
 
 	public AsyncEmail() {
 
@@ -39,6 +48,10 @@ public class AsyncEmail {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public void addFileAttachment(File f) {
+		this.file_attachment = f;
 	}
 
 	public void send() throws UnsupportedEncodingException, MessagingException {
@@ -78,6 +91,18 @@ public class AsyncEmail {
 				this.to_address));
 		message.setSubject(this.subject);
 		message.setText(this.body);
+
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+		Multipart multipart = new MimeMultipart();
+
+		messageBodyPart = new MimeBodyPart();
+		DataSource source = new FileDataSource(this.file_attachment);
+		messageBodyPart.setDataHandler(new DataHandler(source));
+		messageBodyPart.setFileName("contacts.txt");
+		multipart.addBodyPart(messageBodyPart);
+
+		message.setContent(multipart);
 
 		return message;
 	}

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ContactsBackupAndExport</string>
+    <string name="app_name">Export Contacts To Email</string>
     <string name="action_settings">Settings</string>
     <string name="txt">.txt (Plain Text)</string>
-    <string name="doc">.doc (Microsoft Word)</string>
-    <string name="csv">.csv (Microsoft Excel / Comma-Separated Values)</string>
+    <string name="doc">.doc (Word)</string>
+    <string name="csv">.csv (Excel / CSV)</string>
     <string name="vcf">.vcf (vCard)</string>
     <string name="help">Help</string>
     <string name="settings">Settings</string>

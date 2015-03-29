@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
@@ -43,9 +46,9 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 	@Override
 	protected File[] doInBackground(String... params) {
 
-		FileOutputStream fos_txt = null;
+		FileOutputStream fos_csv = null;
 		try {
-			fos_txt = this.context.openFileOutput("contacts.txt",
+			fos_csv = this.context.openFileOutput("contacts.csv",
 					Context.MODE_PRIVATE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -56,15 +59,17 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 		Cursor phone_cursor = null, email_cursor = null;
 
-		String phone_num = null, email = null, email_type = null;
-
 		float total_contacts = contacts_cursor.getCount();
 		float num_read = 0;
 		if (total_contacts > 0) {
 			String id, name;
 
+			ArrayList<String> line = new ArrayList<String>();
+
 			// for each contact
 			while (contacts_cursor.moveToNext()) {
+				line.clear();
+
 				id = contacts_cursor.getString(contacts_cursor
 						.getColumnIndex(ContactsContract.Contacts._ID));
 
@@ -72,46 +77,49 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 				name = contacts_cursor
 						.getString(contacts_cursor
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
 				Log.d("Contact " + num_read, " name: " + name);
+				line.add(name);
 
 				phone_cursor = this.content_resolver.query(
 						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 						null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID
 								+ " = ?", new String[] { id }, null);
 
+				while (phone_cursor.moveToNext()) {
+					String number = phone_cursor
+							.getString(phone_cursor
+									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+					Log.d("Contact " + num_read, " phoneNo: " + number);
+					line.add(number);
+				}
+
 				email_cursor = this.content_resolver.query(
 						ContactsContract.CommonDataKinds.Email.CONTENT_URI,
 						null, ContactsContract.CommonDataKinds.Email.CONTACT_ID
 								+ " = ?", new String[] { id }, null);
 
-				// all phone numbers for the contact
-				while (phone_cursor.moveToNext()) {
-					phone_num = phone_cursor
-							.getString(phone_cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					Log.d("Contact " + num_read, " phoneNo: " + phone_num);
-
-				}
-
 				// all email addresses for the contact
 				while (email_cursor.moveToNext()) {
 
-					email = email_cursor
+					String email_addr = email_cursor
 							.getString(email_cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-					email_type = email_cursor
+
+					String email_type = email_cursor
 							.getString(email_cursor
 									.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
-
-					Log.d("Contact " + num_read, " email: " + email
-							+ " email type: " + email_type);
-
+					Log.d("Contact " + num_read, " email: " + email_addr);
+					line.add(email_addr);
 				}
 
 				try {
-					// write info to file
-					fos_txt.write(new String(name + ',' + phone_num + ','
-							+ email).getBytes());
+
+					// write line to each file
+
+					fos_csv.write(new String(TextUtils.join(",", line) + '\n')
+							.getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -123,11 +131,10 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 			}
 			phone_cursor.close();
 			email_cursor.close();
-
 		}
 
 		try {
-			fos_txt.close();
+			fos_csv.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
