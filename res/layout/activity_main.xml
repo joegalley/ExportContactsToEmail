@@ -90,6 +90,7 @@
                         android:text="2) Choose your output format(s)" />
 
                     <LinearLayout
+                        android:id="@+id/csv_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/csv_selector"

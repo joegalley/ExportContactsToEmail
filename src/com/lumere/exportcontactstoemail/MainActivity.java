@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 public class MainActivity extends ActionBarActivity {
@@ -28,6 +30,21 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// view setup
+		final LinearLayout csv_selector = (LinearLayout) this
+				.findViewById(R.id.csv_btn);
+
+		csv_selector.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (csv_selector.isSelected()) {
+					csv_selector.setSelected(false);
+
+				} else {
+					csv_selector.setSelected(true);
+				}
+			}
+		});
 
 		this.dc_progress_bar = (ProgressBar) this
 				.findViewById(R.id.contacts_progress);
