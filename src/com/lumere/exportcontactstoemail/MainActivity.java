@@ -45,6 +45,20 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+		
+		final LinearLayout doc_selector = (LinearLayout) this
+				.findViewById(R.id.doc_btn);
+
+		doc_selector.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (doc_selector.isSelected()) {
+					doc_selector.setSelected(false);
+
+				} else {
+					doc_selector.setSelected(true);
+				}
+			}
+		});
 
 		this.dc_progress_bar = (ProgressBar) this
 				.findViewById(R.id.contacts_progress);

@@ -80,7 +80,7 @@
                 android:orientation="horizontal" >
 
                 <RadioGroup
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
@@ -94,6 +94,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/csv_selector"
+                        android:clickable="true"
+                        android:orientation="horizontal"
+                        android:padding="5dp" >
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/doc_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/doc_selector"
                         android:clickable="true"
                         android:orientation="horizontal"
                         android:padding="5dp" >
