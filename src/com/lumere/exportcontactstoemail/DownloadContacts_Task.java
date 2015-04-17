@@ -47,8 +47,13 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 	protected File[] doInBackground(String... params) {
 
 		FileOutputStream fos_csv = null;
+		FileOutputStream fos_txt = null;
+		
+
 		try {
 			fos_csv = this.context.openFileOutput("contacts.csv",
+					Context.MODE_PRIVATE);
+			fos_txt = this.context.openFileOutput("contacts.txt",
 					Context.MODE_PRIVATE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -120,6 +125,8 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 					fos_csv.write(new String(TextUtils.join(",", line) + '\n')
 							.getBytes());
+					fos_txt.write(new String(TextUtils.join("\t", line) + '\n')
+					.getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -135,6 +142,7 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 		try {
 			fos_csv.close();
+			fos_txt.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

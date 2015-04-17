@@ -9,7 +9,9 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -25,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
 	DownloadContacts_Fragment dc_fragment;
 	ProgressBar dc_progress_bar;
 	File contacts_file;
+	String usr_email;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
-		
+
 		final LinearLayout doc_selector = (LinearLayout) this
 				.findViewById(R.id.doc_btn);
 
@@ -59,6 +63,9 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+
+		EditText usr_et = (EditText) this.findViewById(R.id.usr_email);
+		this.usr_email = usr_et.getText().toString();
 
 		this.dc_progress_bar = (ProgressBar) this
 				.findViewById(R.id.contacts_progress);
@@ -93,6 +100,11 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void downloadContacts(View view) throws IOException {
+		if (this.usr_email == null || this.usr_email == "") {
+			new AlertDialog.Builder(this).setTitle("Invalid Email Address")
+					.setMessage("Please enter your email address")
+					.setPositiveButton(android.R.string.ok, null).show();
+		}
 		this.dc_fragment.startTask(this);
 	}
 
@@ -167,10 +179,12 @@ public class MainActivity extends ActionBarActivity {
 		// send the email
 		AsyncEmail email = new AsyncEmail();
 		try {
-			email.setToAddress("josephgalley@gmail.com");
+			email.setToAddress("To Address");
 			email.setSubject("Subject Test");
 			email.setBody("Test body");
+			email.addFileAttachment(new File(this.getFilesDir(), "contacts.csv"));
 			email.addFileAttachment(new File(this.getFilesDir(), "contacts.txt"));
+
 			email.send();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
