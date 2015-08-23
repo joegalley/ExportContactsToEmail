@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -35,7 +37,35 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// view setup
+		/* view setup */
+
+		// about button
+		Button btn_about = (Button) this.findViewById(R.id.btn_about);
+		btn_about.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, AboutActivity.class);
+				MainActivity.this.startActivity(i);
+			}
+		});
+
+		// settings button
+		Button btn_settings = (Button) this.findViewById(R.id.btn_settings);
+		btn_settings.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+				MainActivity.this.startActivity(i);
+			}
+		});
+
+		// help button
+		Button btn_help = (Button) this.findViewById(R.id.btn_help);
+		btn_help.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, HelpActivity.class);
+				MainActivity.this.startActivity(i);
+			}
+		});
+
 		final LinearLayout csv_selector = (LinearLayout) this
 				.findViewById(R.id.csv_btn);
 
@@ -100,12 +130,13 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void downloadContacts(View view) throws IOException {
-		if (this.usr_email == null || this.usr_email == "") {
+		if (this.usr_email == null || this.usr_email.equals("")) {
 			new AlertDialog.Builder(this).setTitle("Invalid Email Address")
 					.setMessage("Please enter your email address")
 					.setPositiveButton(android.R.string.ok, null).show();
+		} else {
+			this.dc_fragment.startTask(this);
 		}
-		this.dc_fragment.startTask(this);
 	}
 
 	// progress bar for DownloadContacts_Task
@@ -149,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void sendEmail() {
-		/*-
+
 		FileInputStream fis;
 
 		this.getApplicationContext().getFilesDir();
@@ -175,7 +206,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		 */
+
 		// send the email
 		AsyncEmail email = new AsyncEmail();
 		try {
