@@ -24,8 +24,8 @@ import android.os.AsyncTask;
 
 public class AsyncEmail {
 
-	private String from_address = "EMAIL";
-	private String from_password = "PASS";
+	private String from_address = "from";
+	private String from_password = "from_pwd*";
 	private String sender_f_name = "First";
 	private String sender_l_name = "Last";
 

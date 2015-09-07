@@ -51,7 +51,7 @@
         android:layout_weight="40"
         android:orientation="vertical" >
 
-        <LinearLayout
+       <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -116,53 +116,54 @@
                         android:padding="5dp" >
                     </LinearLayout>
                 </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:orientation="horizontal" />
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/contacts_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:max="100"
-                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_weight="3"
+                android:orientation="horizontal" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2" >
-                </LinearLayout>
+        <ProgressBar
+            android:id="@+id/contacts_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:max="100"
+            android:visibility="gone" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3) Click &apos;Begin Export&apos;" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-                <Button
-                    android:id="@+id/btn_begin_export"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:onClick="downloadContacts"
-                    android:text="Begin Export" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" >
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2" >
-                </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3) Click &apos;Begin Export&apos;" />
+
+            <Button
+                android:id="@+id/btn_begin_export"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:onClick="downloadContacts"
+                android:text="Begin Export" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" >
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

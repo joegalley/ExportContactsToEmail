@@ -9,18 +9,26 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 		btn_settings.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-				MainActivity.this.startActivity(i);
+				startActivity(i);
 			}
 		});
 
@@ -66,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		// .csv selector
 		final LinearLayout csv_selector = (LinearLayout) this
 				.findViewById(R.id.csv_btn);
 
@@ -80,6 +89,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		// .doc selector
 		final LinearLayout doc_selector = (LinearLayout) this
 				.findViewById(R.id.doc_btn);
 
@@ -94,8 +104,23 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		EditText usr_et = (EditText) this.findViewById(R.id.usr_email);
-		this.usr_email = usr_et.getText().toString();
+		// .pdf selector
+
+		/*-
+		final LinearLayout pdf_selector = (LinearLayout) this
+				.findViewById(R.id.pdf_btn);
+
+		pdf_selector.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (pdf_selector.isSelected()) {
+					pdf_selector.setSelected(false);
+
+				} else {
+					pdf_selector.setSelected(true);
+				}
+			}
+		});
+		 */
 
 		this.dc_progress_bar = (ProgressBar) this
 				.findViewById(R.id.contacts_progress);
@@ -130,7 +155,11 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void downloadContacts(View view) throws IOException {
-		if (this.usr_email == null || this.usr_email.equals("")) {
+		EditText usr_email = (EditText) this.findViewById(R.id.usr_email);
+		String email_addr = usr_email.getText().toString();
+
+		//
+		if (email_addr == null || email_addr.equals("")) {
 			new AlertDialog.Builder(this).setTitle("Invalid Email Address")
 					.setMessage("Please enter your email address")
 					.setPositiveButton(android.R.string.ok, null).show();
@@ -210,10 +239,11 @@ public class MainActivity extends ActionBarActivity {
 		// send the email
 		AsyncEmail email = new AsyncEmail();
 		try {
-			email.setToAddress("To Address");
-			email.setSubject("Subject Test");
+			email.setToAddress("to_addr");
+			email.setSubject("Your Contacts");
 			email.setBody("Test body");
-			email.addFileAttachment(new File(this.getFilesDir(), "contacts.csv"));
+			// email.addFileAttachment(new File(this.getFilesDir(),
+			// "contacts.csv"));
 			email.addFileAttachment(new File(this.getFilesDir(), "contacts.txt"));
 
 			email.send();
@@ -222,6 +252,5 @@ public class MainActivity extends ActionBarActivity {
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

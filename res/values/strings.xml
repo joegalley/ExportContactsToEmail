@@ -11,5 +11,8 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="email_input">Your email address&#8230;</string>
+    <string name="pref_infoToExport_category_title">Information to Export</string>
+    <string name="pref_infoToExport_summary">This information will be included for each contact.</string>
+    <string name="pref_infoToExport_title">Title</string>
 
 </resources>

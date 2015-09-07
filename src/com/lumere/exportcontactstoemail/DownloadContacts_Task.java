@@ -13,6 +13,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -48,7 +50,6 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 		FileOutputStream fos_csv = null;
 		FileOutputStream fos_txt = null;
-		
 
 		try {
 			fos_csv = this.context.openFileOutput("contacts.csv",
@@ -73,49 +74,55 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 
 			// for each contact
 			while (contacts_cursor.moveToNext()) {
+				// reset line
 				line.clear();
 
+				// contact ID
 				id = contacts_cursor.getString(contacts_cursor
 						.getColumnIndex(ContactsContract.Contacts._ID));
 
-				Log.d("Contact " + num_read, " id: " + id);
+				// contact name
 				name = contacts_cursor
 						.getString(contacts_cursor
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-				Log.d("Contact " + num_read, " name: " + name);
 				line.add(name);
 
-				phone_cursor = this.content_resolver.query(
-						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-						null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-								+ " = ?", new String[] { id }, null);
+				phone_cursor = this.content_resolver.query(Phone.CONTENT_URI,
+						null, Phone.CONTACT_ID + " = ?", new String[] { id },
+						null);
 
 				while (phone_cursor.moveToNext()) {
-					String number = phone_cursor
-							.getString(phone_cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					String number = phone_cursor.getString(phone_cursor
+							.getColumnIndex(Phone.NUMBER));
 
-					Log.d("Contact " + num_read, " phoneNo: " + number);
+					int phone_type = phone_cursor.getInt(phone_cursor
+							.getColumnIndex(Phone.TYPE));
 					line.add(number);
 				}
 
-				email_cursor = this.content_resolver.query(
-						ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-						null, ContactsContract.CommonDataKinds.Email.CONTACT_ID
-								+ " = ?", new String[] { id }, null);
+				email_cursor = this.content_resolver.query(Email.CONTENT_URI,
+						null, Email.CONTACT_ID + " = ?", new String[] { id },
+						null);
 
 				// all email addresses for the contact
 				while (email_cursor.moveToNext()) {
 
-					String email_addr = email_cursor
-							.getString(email_cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+					String email_addr = email_cursor.getString(email_cursor
+							.getColumnIndex(Email.DATA));
 
-					String email_type = email_cursor
-							.getString(email_cursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
-					Log.d("Contact " + num_read, " email: " + email_addr);
+					int email_type = Integer
+							.parseInt(email_cursor.getString(email_cursor
+									.getColumnIndex(Email.TYPE)));
+
+					switch (email_type) {
+					case (Email.TYPE_HOME):
+						break;
+					default:
+						break;
+
+					}
+
 					line.add(email_addr);
 				}
 
@@ -126,7 +133,7 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 					fos_csv.write(new String(TextUtils.join(",", line) + '\n')
 							.getBytes());
 					fos_txt.write(new String(TextUtils.join("\t", line) + '\n')
-					.getBytes());
+							.getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -138,6 +145,10 @@ public class DownloadContacts_Task extends AsyncTask<String, Float, File[]> {
 			}
 			phone_cursor.close();
 			email_cursor.close();
+		}
+		// There were no contacts to read.
+		else {
+
 		}
 
 		try {

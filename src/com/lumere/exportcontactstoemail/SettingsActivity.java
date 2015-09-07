@@ -1,14 +1,18 @@
 package com.lumere.exportcontactstoemail;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 public class SettingsActivity extends Activity {
+	protected void onCreate(Bundle savedInstaceState) {
+		super.onCreate(savedInstaceState);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings);
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		ft.replace(android.R.id.content, new SettingsFragment());
+		ft.commit();
+
 	}
-
 }
